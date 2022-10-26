@@ -4,10 +4,9 @@ su
 yum install -y irssi
 yum install -y tmux
 
-#httpd
-yum install -y httpd
-cp httpd.conf /etc/httpd/conf/
-cp welcome.conf /etc/httpd/conf.d/
+source httpd/install.sh
+
+
 
 #rights (not needed)
 addgroup webusers
@@ -25,4 +24,5 @@ done
 
 #proxi
 adduser -r proxi
+sudo -u 
 
