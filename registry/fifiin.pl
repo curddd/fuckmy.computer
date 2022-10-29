@@ -1,4 +1,4 @@
-$FIFO = "/var/www/.reg_fifo";
+$FIFO = "/var/www/cgi-bin/.reg_fifo";
 
 unless(-p $FIFO){
 	unlink $FIFO;

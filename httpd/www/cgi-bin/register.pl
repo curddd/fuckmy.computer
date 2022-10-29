@@ -19,16 +19,22 @@ else{
 	die;
 }
 
-my $user = shift || $in{'user'};
-my $pass = shift || $in{'pass'};
+my $user = $in{'user'};
+my @filter = $user =~ /([a-zA-Z0-9]+)/;
+if($filter[0] eq ""){
+	print "sorry, not compatibale username";
+}
 
+my $FIFO = "/var/www/cgi-bin/.reg_fifo";
 
-my $write_ln = "$user $pass";
-my $FIFO = ".reg_fifo";
+$user = $filter[0];
 
-open(my $FH, ">", $FIFO) or die("couldnt open fifo thing\n");
-print $FH $write_ln;
-close($FH);
+my $line = "echo '${user}' > ${FIFO}";
 
+print "${line}\n";
+system($line);
+open my $out, ">", $FIFO or die("cant open fifo $!");
+print $out $user;
+close $out;
 
-print "if you're lucky it worked and you can now ssh into this machine with $user and $pass"
+print "if you're lucky it worked and you can now ssh into this machine with $user and pass secure"

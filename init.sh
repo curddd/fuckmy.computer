@@ -10,3 +10,6 @@ cd ..
 cp .bashrc /root/.bashrc
 
 systemctl stop firewalld
+systemctl disable firewalld
+systemctl enable httpd
+systemctl start httpd
