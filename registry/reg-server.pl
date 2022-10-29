@@ -1,37 +1,23 @@
-
+#!/usr/bin/perl
 use strict;
-use IO::Socket;
 use Socket;
-use Sys::Hostname;
-use constant BUFSIZE => 1024;
+use Carp;
 
-# use port 7890 as default
-my $port = shift || 7890;
+my $NAME = '/var/www/cgi-bin/regsock';
+my $uaddr = sockaddr_un($NAME);
 my $proto = getprotobyname('tcp');
-my $server = "localhost";  # Host IP running the server
-my $socket; 
 
-# create a socket, make it reusable
-socket($socket, PF_INET, SOCK_STREAM, $proto)
-   or die "Can't open socket $!\n";
-setsockopt($socket, SOL_SOCKET, SO_REUSEADDR, 1)
-   or die "Can't set socket option to SO_REUSEADDR $!\n";
+socket(my $server, PF_UNIX, SOCK_STREAM, 0) || die "socket: $!";
+unlink($NAME);
+bind($server, $uaddr) || die "bind: $!";
+listen($server, 5) or die "listen: $!";
+print "SERVER started on $NAME $uaddr\n";
 
-# bind to a port, then listen
-bind($socket, pack_sockaddr_in($port, inet_aton($server)))
-   or die "Can't bind to port $port! \n";
+system('chmod 770 /var/www/cgi-bin/regsock');
+system('chown apache:apache /var/www/cgi-bin/regsock');
 
-listen($socket, 5) or die "listen: $!";
-print "SERVER started on port $port\n";
-
-
-
-while (my $client_addr = accept(my $new_socket, $socket)) 
+while (my $client_addr = accept(my $new_socket, $server)) 
 {
-   $new_socket->autoflush;
-   my $name = gethostbyaddr($client_addr, AF_INET );
-   print "Connection received from $name\n";
-
    print $new_socket "Hello from the server\n";
 
    while (my $recd = <$new_socket>) {

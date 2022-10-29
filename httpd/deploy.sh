@@ -1,3 +1,3 @@
 #!/bin/sh
-su
-cp -rf www/ /var/www
+cp -Rf www/ /var/
+chmod 755 /var/www/cgi-bin/register.pl

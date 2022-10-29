@@ -1,5 +1,5 @@
 #!/bin/sh
-su
 yum -y install httpd
+systemctl start httpd
 cp httpd.conf /etc/httpd/conf/httpd.conf
-source deploy.sh
+sh deploy.sh

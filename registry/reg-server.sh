@@ -1,5 +1,5 @@
-#!/bin/bash
-while:
+#!/bin/sh
+while [ 1 ]
 do
 	perl reg-server.pl	
 	sleep 1
