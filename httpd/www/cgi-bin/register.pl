@@ -31,8 +31,8 @@ $user = $filter[0];
 
 my $line = "echo '${user}' > ${FIFO}";
 
-print "${line}\n";
-system($line);
+#print "${line}\n";
+#system($line);
 open my $out, ">", $FIFO or die("cant open fifo $!");
 print $out $user;
 close $out;

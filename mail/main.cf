@@ -1,0 +1,11 @@
+myhostname = schizo.life
+mydestination = schizo.life
+myorigin = schizo.life
+relayhost = 
+mynetworks = 127.0.0.1/8
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+smtpd_use_tls = no
+home_mailbox = mbox
+mailbox_command = 

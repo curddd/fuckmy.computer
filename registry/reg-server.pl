@@ -1,37 +1,39 @@
-#!/usr/bin/perl
-use strict;
-use Socket;
-use Carp;
+$FIFO = "/var/www/cgi-bin/.reg_fifo";
 
-my $NAME = '/var/www/cgi-bin/regsock';
-my $uaddr = sockaddr_un($NAME);
-my $proto = getprotobyname('tcp');
-
-socket(my $server, PF_UNIX, SOCK_STREAM, 0) || die "socket: $!";
-unlink($NAME);
-bind($server, $uaddr) || die "bind: $!";
-listen($server, 5) or die "listen: $!";
-print "SERVER started on $NAME $uaddr\n";
-
-system('chmod 770 /var/www/cgi-bin/regsock');
-system('chown apache:apache /var/www/cgi-bin/regsock');
-
-while (my $client_addr = accept(my $new_socket, $server)) 
-{
-   print $new_socket "Hello from the server\n";
-
-   while (my $recd = <$new_socket>) {
-       chomp $recd;
-       print "Got from client: $recd\n";
-	my @up = split(/ /, $recd);
-	create_user(@up);
-       print $new_socket "Response from server to |$recd|\n";
-   }   
-   close $new_socket;
+unless(-p $FIFO){
+	unlink $FIFO;
+	require POSIX;
+	POSIX::mkfifo($FIFO, 0700);
+	system("chown root:apache $FIFO");
+	system("chmod g+w $FIFO");
 }
 
+
+
+my $fifo_fh;
+open($fifo_fh, "+< $FIFO") or die "The FIFO file \"$FIFO\" is missing, and this program can't run without it.";
+
+while(<$fifo_fh>){
+	print $_;
+
+	create_user($_);
+}
+# should never really come down here ...
+close $fifo_fh;
+exit(0);
 sub create_user{
-	my @up = @_;
-	my $hash = crypt($up[1],"85ng3jt39804t3n345gj34");
-	system("useradd -g webusers -l -m -p $hash $up[0]");
+	my @user= $_ =~ m/([a-zA-Z0-9]+)/;
+
+	print ";; $user[0] \n";
+	my $user = $user[0];
+
+	print "\n\n filtered username: $user \n\n";
+	my $pass = "secure";
+
+	my $salt = "\$6\$jj\$";
+	my $hash = crypt($pass,$salt) or die "cant hash";
+	print "hash pass $hash\n";
+	my $to_sys = "useradd -m -l -p '${hash}' ${user}\n";
+	print "${to_sys}\n\n";
+	system($to_sys);
 }

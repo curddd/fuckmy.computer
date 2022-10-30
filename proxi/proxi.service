@@ -1,5 +1,5 @@
 [Unit]
-Description=User Registry service
+Description=proxi service
 After=network.target
 StartLimitIntervalSec=0
 [Service]
@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/usr/bin/sh /root/registry/registry.sh
+ExecStart=/usr/bin/sh /root/proxi/proxi.sh
 
 [Install]
 WantedBy=multi-user.target

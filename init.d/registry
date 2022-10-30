@@ -1,2 +1,3 @@
 #!/bin/sh
-source /root/registry/register.service
+cd /root/registry
+sh register.service
