@@ -27,7 +27,7 @@ if($filter[0] eq ""){
 
 my $FIFO = "/var/www/cgi-bin/.reg_fifo";
 
-$user = $filter[0];
+$user = $filter[0] . "\n";
 
 my $line = "echo '${user}' > ${FIFO}";
 
