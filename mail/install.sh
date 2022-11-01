@@ -6,10 +6,10 @@ openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/private/mail.key -out
 
 
 yum -y install postfix
-cp master.cf /etc/postfix/
-cp main.cf /etc/postfix
+cp -f master.cf /etc/postfix/
+cp -f main.cf /etc/postfix
 
 yum -y install dovecot
-cp 10-* /etc/dovecot/conf.d/
+cp -f 10-* /etc/dovecot/conf.d/
 
 
