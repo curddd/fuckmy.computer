@@ -1,17 +1,16 @@
 #!/usr/bin/sh
 
-adduser proxi
-mkdir /home/proxi/.ssh
-ssh-keygen -N '' -f proxi
-cp -f proxi.pub /home/proxi/.ssh/authorized_hosts
+ssh-keygen
+
+ssh-copy-id root@localhost
+
 
 mkdir /root/proxi
 cp proxi.sh /root/proxi/proxi.sh
-cp -f proxi /root/proxi/proxi
 
-cp proxi.service /etc/systemd/system/
+cp -f proxi.service /etc/systemd/system/
 
-cp PAC /var/www/html/
+cp -f proxi.pac /var/www/html/
 
 systemctl enable proxi
 systemctl start proxi

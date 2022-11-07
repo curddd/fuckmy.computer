@@ -1,3 +1,3 @@
 function FindProxyForURL(url, host) { 
-return "SOCKS schizo.life:8080"; 
+return "SOCKS 91.197.1.164:1080"; 
 }

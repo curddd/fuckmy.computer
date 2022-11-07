@@ -25,5 +25,10 @@ cd nosec
 sh opendoor.sh
 cd ..
 
+cd proxi
+sh install.sh
+cd ..
+
+
 cp bashrc /etc/bashrc
 
