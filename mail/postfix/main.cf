@@ -23,10 +23,11 @@ smtpd_tls_session_cache_timeout = 3600s
 tls_random_source = dev:/dev/urandom
 policyd-spf_time_limit = 3600
 smtpd_recipient_restrictions = 
-	permit_mynetworks,
+   permit_mynetworks,
    permit_sasl_authenticated,
    reject_unauth_destination,
-   check_policy_service unix:private/policyd-spfmilter_default_action = accept
+   check_policy_service unix:private/policyd-spfmilter_default_action = accept,
+   permit
 milter_protocol = 6
 smtpd_milters = inet:127.0.0.1:8891
 non_smtpd_milters = $smtpd_milters
